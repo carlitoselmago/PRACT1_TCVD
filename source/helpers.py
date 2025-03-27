@@ -1,3 +1,6 @@
+import configparser
+import os
+
 def create_config(config_file_path, user, pwd):
     config = configparser.ConfigParser()
     config.add_section('Credenciales')
@@ -15,7 +18,7 @@ def get_config():
         pwd = config.get('Credenciales', 'contraseña')
         print('Configuración cargada: Usuario - {}'.format(user))
     else:
-        print("settings.ini no existe, introduce tu usuario y contraseña de Twitter y los datos se guardarán para la próxima vez")
+        print("settings.ini no existe, introduce tu usuario y contraseña de X.com y los datos se guardarán para la próxima vez")
         user = input('Introduce el usuario: ')
         pwd = input('Introduce la contraseña: ')
         create_config(config_file_path, user, pwd)
