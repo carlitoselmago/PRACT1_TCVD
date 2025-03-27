@@ -1,1 +1,0 @@
-Colocar aquí un archivo por cada fuente/web de datos a parsear, crear una función principal llamada scrap()
