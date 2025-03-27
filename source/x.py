@@ -7,7 +7,17 @@ from time import sleep
 from helpers import *
 import sys
 
-#obtenemos las credenciales de x.com
+
+"""
+Scrapper para X.com
+
+"""
+# Variables: TODO: integrar con input()
+termino = 'Agresión'
+ubicacion = 'Spain'
+
+
+#obtenemos las credenciales para x.com
 user,pwd=get_config()
 
 browser = webdriver.Firefox()
@@ -34,8 +44,6 @@ username_input.send_keys(Keys.ENTER)
 sleep(3)
 
 # Realizar la búsqueda
-termino = 'Agresión'
-ubicacion = 'Spain'
 
 query = f'{termino} place:{ubicacion}'
 
@@ -43,3 +51,29 @@ url = f'https://x.com/search?q={query}'
 
 browser.get(url)
 wait = WebDriverWait(browser, 30)
+
+
+
+# Empezamos el scrapping
+while True:
+
+    posts=browser.find_elements(By.CSS_SELECTOR,'div[data-testid="cellInnerDiv"]')
+
+    for p in posts:
+        #try:
+            timeelem=p.find_element(By.CSS_SELECTOR,'time[datetime]')
+            parent=timeelem.find_element(By.XPATH, '..')
+            post={
+                'time':timeelem.get_attribute("datetime"),
+                'posturl':parent.get_attribute("href"),
+                'username':p.find_element(By.CSS_SELECTOR,'.css-1jxf684.r-dnmrzs.r-1udh08x.r-1udbk01.r-3s2u2q.r-bcqeeo.r-1ttztb7.r-qvutc0.r-poiln3').text
+            }
+            print(post)
+            sys.exit()
+        #except Exception as e:
+        #    print("Hubo un error al procesar el post:",e)
+
+            
+            
+            
+            
