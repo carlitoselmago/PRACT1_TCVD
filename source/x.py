@@ -175,7 +175,9 @@ while current_date < end_date:
 
     # Pasamos al siguiente mes
     current_date = next_month
-    sleep(25)  
+    pausa_entre_meses=120 # en segundos
+    sleep(120)  
+    print(f"Pausando durante {pausa_entre_meses/60} minutos...")
 
 # Guardamos todo en un CSV
 if all_data:
