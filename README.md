@@ -26,3 +26,4 @@ update-ca-certificates
 
 ## Fuentes de datos
 x.com
+elpais.com

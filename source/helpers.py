@@ -3,6 +3,7 @@ import os
 import requests
 from furl import furl
 import re
+from datetime import datetime, timedelta
 
 """
 Funciones de ayuda para scrapping y procesamiento básico de contenidos
@@ -72,7 +73,8 @@ def downloadmedia(url, driver, downloadfolder):
     else:
         print("Error:", response.status_code)
         return False
-
+    
+# Función para extraer los valores numéricos de las estadísticas del post
 def processstats(stat):
     v = str(stat.text)
 
@@ -90,3 +92,9 @@ def processstats(stat):
         vp*=1000000
 
     return vp
+
+# Función auxiliar para obtener el primer día del siguiente mes
+def get_next_month(d):
+    # Avanza al día 28 (fijo), suma 4 días para salir del mes, y luego reubica en día 1
+    next_m = (d.replace(day=28) + timedelta(days=4)).replace(day=1)
+    return next_m
