@@ -130,7 +130,7 @@ while current_date < end_date:
                     'Replies': processstats(statsdom[0]),
                     'Reposts': processstats(statsdom[1]),
                     'Likes':   processstats(statsdom[2]),
-                    'Visitas': processstats(statsdom[3]),
+                    'Visitas': processstats(statsdom[3],asint=False),
                     'Lugar':   ubicacion
                 }
 
@@ -138,7 +138,7 @@ while current_date < end_date:
                 if post not in data:
                     data.append(post)
                     nuevos_posts += 1
-                    print(post["Fecha"], post["Autor"], "::::")
+                    print(post["Fecha"], post["Autor"],post['Visitas'] "::::")
 
             except Exception as e:
                 print("Hubo un error al procesar el post:", e)
@@ -183,7 +183,8 @@ while current_date < end_date:
 if all_data:
     keys = all_data[0].keys()
     filename = f'x_scrap_{termino}_{ubicacion}_{fecha_inicio}_{fecha_fin}.csv'
-    with open(filename, 'w', newline='', encoding='utf-8') as output_file:
+    filename_path = os.path.join('..', 'datasets', filename)
+    with open(filename_path, 'w', newline='', encoding='utf-8') as output_file:
         dict_writer = csv.DictWriter(output_file, keys)
         dict_writer.writeheader()
         dict_writer.writerows(all_data)

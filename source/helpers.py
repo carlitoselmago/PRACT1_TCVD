@@ -75,21 +75,25 @@ def downloadmedia(url, driver, downloadfolder):
         return False
     
 # Función para extraer los valores numéricos de las estadísticas del post
-def processstats(stat):
+def processstats(stat, asint=True):
     v = str(stat.text)
 
-    # Convertimos a int aunque exista texto no numérico
-    digitos = re.findall(r'\d+', v)
-    if digitos:
-        vp = int(''.join(digitos))
+    # Buscar números 
+    match = re.search(r'\d+(?:\.\d+)?', v)
+    if match:
+        vp = float(match.group())
     else:
-        vp = 0 
+        vp = 0.0
 
-    # Multiplicamos si existen las letras K = 1000 o M = 1000000
+    # Escalar si hay K o M
     if "K" in v:
-        vp*=1000
-    if "M" in v:
-        vp*=1000000
+        vp *= 1000
+    elif "M" in v:
+        vp *= 1_000_000
+
+    # Convertir a int si el atributo asint = True
+    if asint:
+        vp = int(vp)
 
     return vp
 
