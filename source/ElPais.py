@@ -19,7 +19,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 base_url = "https://elpais.com/noticias/violencia-machista/"  # URL de inicio
 excel_filename = "noticias_excel.xlsx"  # Archivo de salida
 filtrar_por_anio = True  # Activar filtro por años
-anios_filtrados = list(range(2025, 2026))  # Años a conservar
+anios_filtrados = list(range(2015, 2025))  # Años a conservar
 
 # ==================== CONFIGURACIÓN DE CHROME ====================
 options = Options()
