@@ -109,7 +109,6 @@ while True:
                 fecha, ciudad, resumen, imagen_url, current_url
             ])
             total_noticias += 1
-            print({total_noticias})
     # ==================== NAVEGAR A SIGUIENTE PÁGINA ====================
     try:
         contenedor = driver.find_element(By.CSS_SELECTOR, "div.b-au_f")
