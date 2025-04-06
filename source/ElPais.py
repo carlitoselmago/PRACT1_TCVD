@@ -23,14 +23,14 @@ anios_filtrados = list(range(2015, 2025))  # Años a conservar
 
 # ==================== CONFIGURACIÓN DE CHROME ====================
 options = Options()
-# options.add_argument("--headless=new")  # Ejecutar sin abrir ventana
+options.add_argument("--headless=new")  
 options.add_argument("--disable-gpu")
 options.add_argument("--window-size=1920x1080")
 options.add_argument("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36")
 
-# Iniciar navegador
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 driver.get(base_url)
+
 pagina = 0
 total_noticias = 0
 cookies_aceptadas = False
@@ -54,11 +54,29 @@ while True:
             print("No se encontró el botón de cookies o ya está aceptado")
 
     current_url = driver.current_url
-    articulos = driver.find_elements(By.CSS_SELECTOR, "article.c")
-    print(f"{len(articulos)} artículos encontrados en la página {pagina}")
 
-    # ==================== PROCESAR ARTÍCULOS ====================
-    for articulo in articulos:
+    # 1) Localizar TODOS los nodos article.c
+    todos_los_articulos = driver.find_elements(By.CSS_SELECTOR, "article.c")
+    
+    # 2) Crear lista de artículos válidos
+    valid_articulos = []
+    for ar in todos_los_articulos:
+        try:
+            # Verificamos si contienen header.c_h h2 a (título) y div.c_a time (fecha)
+            ar.find_element(By.CSS_SELECTOR, "header.c_h h2 a")
+            ar.find_element(By.CSS_SELECTOR, "div.c_a time")
+            valid_articulos.append(ar)
+        except NoSuchElementException:
+            # Si no tiene esos elementos, lo consideramos no válido (ej. publicidad o contenedor vacío)
+            pass
+
+    print(f"{len(valid_articulos)} artículos encontrados en esta página.")
+
+    # Contador de cuántos artículos guardamos realmente en esta página
+    articulos_en_esta_pagina = 0
+
+    # ==================== PROCESAR SOLO LOS ARTÍCULOS VÁLIDOS ====================
+    for articulo in valid_articulos:
         try:
             categoria_tag = articulo.find_element(By.CSS_SELECTOR, "header.c_h a.c_k")
             categoria = categoria_tag.text
@@ -102,13 +120,18 @@ while True:
         except:
             ciudad = ""
 
-        # Guardar según filtro de año
+        # Guardar sólo si pasa el filtro de año (si está activado)
         if not filtrar_por_anio or (año in anios_filtrados):
             datos.append([
                 titulo, enlace, categoria, categoria_link, autor, autor_link,
                 fecha, ciudad, resumen, imagen_url, current_url
             ])
             total_noticias += 1
+            articulos_en_esta_pagina += 1
+
+    # Resumen de la página
+    print(f"En la página {pagina}, se han GUARDADO {articulos_en_esta_pagina} artículos (acumulado total: {total_noticias}).")
+
     # ==================== NAVEGAR A SIGUIENTE PÁGINA ====================
     try:
         contenedor = driver.find_element(By.CSS_SELECTOR, "div.b-au_f")
