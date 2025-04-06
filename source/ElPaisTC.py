@@ -12,13 +12,6 @@ Script para iniciar sesión en El País, recorrer enlaces de noticias guardados 
 extraer el texto de cada noticia y guardar el resultado en un nuevo archivo.
 """
 
-# -*- coding: utf-8 -*-
-"""
-Script para iniciar sesión en El País, leer enlaces desde un archivo Excel
-y guardar el texto completo de cada noticia en una nueva columna.
-Optimizado para evitar repetir el cierre del banner de cookies.
-"""
-
 import time
 import json
 import pandas as pd
