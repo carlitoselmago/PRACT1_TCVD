@@ -138,7 +138,7 @@ while current_date < end_date:
                 if post not in data:
                     data.append(post)
                     nuevos_posts += 1
-                    print(post["Fecha"], post["Autor"],post['Visitas'] "::::")
+                    print(post["Fecha"], post["Autor"],post['Visitas'], "::::")
 
             except Exception as e:
                 print("Hubo un error al procesar el post:", e)
